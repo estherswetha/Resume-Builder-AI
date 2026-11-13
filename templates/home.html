@@ -1,0 +1,417 @@
+{% extends 'base.html' %}
+
+{% block title %}ResumeGen AI | Build Your Career Story{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+
+        <div class="announcement">
+            <span class="live-dot"></span>
+            INTRODUCING YOUR AI CAREER ARCHITECT
+            <span>✦</span>
+        </div>
+
+        <h1>
+            Your Skills.
+            Your Story.
+            <span>Your Next Opportunity.</span>
+        </h1>
+
+        <p class="hero-description">
+            Don't just build a resume. Build your future.
+            Transform your skills, projects and experience
+            into a powerful professional identity with AI.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="{% url 'resumes:builder_create' %}" class="build-resume-btn">
+                Build My Resume ↗
+            </a>
+
+            <a href="#how-it-works" class="outline-btn">
+                Discover How It Works
+            </a>
+        </div>
+
+        <div class="hero-trust">
+            <div class="avatar-stack">
+                <span>S</span>
+                <span>A</span>
+                <span>R</span>
+                <span>+</span>
+            </div>
+
+            <p>
+                <strong>AI-powered career building</strong>
+                <br>
+                Built for students, freshers and professionals
+            </p>
+        </div>
+
+    </div>
+
+    <!-- RESUME PREVIEW -->
+    <div class="hero-visual">
+
+        <div class="floating-label top-label">
+            ✦ AI Content Assistant
+        </div>
+
+        <div class="resume-paper">
+
+            <div class="resume-top">
+                <div>
+                    <h2>YOUR NAME</h2>
+                    <p>PYTHON DEVELOPER</p>
+                </div>
+                <div class="resume-profile">YN</div>
+            </div>
+
+            <div class="resume-contact">
+                yourname@email.com · +91 98765 43210
+            </div>
+
+            <div class="resume-section">
+                <h4>PROFILE SUMMARY</h4>
+                <p>
+                    Motivated developer passionate about
+                    building modern web applications using
+                    Python and Django.
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h4>TECHNICAL SKILLS</h4>
+                <div class="skill-tags">
+                    <span>Python</span>
+                    <span>Django</span>
+                    <span>SQL</span>
+                    <span>HTML</span>
+                </div>
+            </div>
+
+            <div class="resume-section">
+                <h4>PROJECT EXPERIENCE</h4>
+                <strong>Student Management System</strong>
+                <p>
+                    Developed a student record management
+                    application using Python.
+                </p>
+            </div>
+
+            <div class="resume-section">
+                <h4>EDUCATION</h4>
+                <strong>Bachelor's Degree</strong>
+                <p>Computer Science</p>
+            </div>
+
+            <div class="resume-bottom">
+                <span>RESUMEGEN AI</span>
+                <span>PROFESSIONAL PROFILE</span>
+            </div>
+
+        </div>
+
+        <div class="floating-label score-label">
+            <div class="score-circle">92</div>
+            <div>
+                <strong>Resume Strength</strong>
+                <p>Illustrative score</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATS SECTION -->
+<section class="stats">
+    <div>
+        <h2>01</h2>
+        <p>AI Resume Creation</p>
+    </div>
+
+    <div>
+        <h2>02</h2>
+        <p>Smart Job Matching</p>
+    </div>
+
+    <div>
+        <h2>03</h2>
+        <p>Career Improvement</p>
+    </div>
+
+    <div>
+        <h2>04</h2>
+        <p>Interview Preparation</p>
+    </div>
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="features" id="features">
+
+    <div class="section-heading">
+        <span class="section-tag">INTELLIGENCE MEETS OPPORTUNITY</span>
+
+        <h2>
+            More Than a Resume.
+            <span>Your Career Advantage.</span>
+        </h2>
+
+        <p>
+            A complete AI career toolkit that helps you
+            stand out in today's competitive job market.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <!-- 01. AI RESUME ARCHITECT -->
+        <div class="feature-card feature-highlight">
+            <div class="feature-icon">✦</div>
+            <span class="feature-number">01 / CREATE</span>
+            <h3>AI Resume Architect</h3>
+            <p>
+                Turn your basic information into
+                impressive, professional resume content.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'architect' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+        <!-- 02. ATS INTELLIGENCE -->
+        <div class="feature-card">
+            <div class="feature-icon">◎</div>
+            <span class="feature-number">02 / ANALYZE</span>
+            <h3>ATS Intelligence</h3>
+            <p>
+                Analyze formatting, keywords and
+                compatibility with applicant tracking systems.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'ats-intelligence' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+        <!-- 03. JOB MATCH AI -->
+        <div class="feature-card">
+            <div class="feature-icon">⌘</div>
+            <span class="feature-number">03 / MATCH</span>
+            <h3>Job Match AI</h3>
+            <p>
+                Compare your resume with a job description
+                and identify relevant missing skills.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'job-match' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+        <!-- 04. SMART SKILL ENHANCER -->
+        <div class="feature-card">
+            <div class="feature-icon">↗</div>
+            <span class="feature-number">04 / IMPROVE</span>
+            <h3>Smart Skill Enhancer</h3>
+            <p>
+                Transform simple project descriptions
+                into clear, achievement-focused statements.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'skill-enhancer' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+        <!-- 05. AI INTERVIEW COACH -->
+        <div class="feature-card">
+            <div class="feature-icon">◈</div>
+            <span class="feature-number">05 / PREPARE</span>
+            <h3>AI Interview Coach</h3>
+            <p>
+                Generate interview questions based on
+                your resume and target job role.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'interview-coach' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+        <!-- 06. CAREER VAULT -->
+        <div class="feature-card">
+            <div class="feature-icon">▤</div>
+            <span class="feature-number">06 / MANAGE</span>
+            <h3>Career Vault</h3>
+            <p>
+                Save multiple resume versions, manage
+                your history and download PDF copies.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'career-vault' %}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Explore feature ↗
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- UNIQUE FEATURE -->
+<section class="career-section" id="about">
+
+    <div class="career-content">
+        <span class="section-tag">OUR UNIQUE INNOVATION</span>
+
+        <h2>
+            Discover the
+            <span>Professional You.</span>
+        </h2>
+
+        <p>
+            Our Career DNA feature analyzes your verified
+            skills, projects, education and career interests
+            to create a personalized career profile.
+        </p>
+
+        <ul>
+            <li>✓ Discover your strongest skills</li>
+            <li>✓ Identify skill gaps for your target role</li>
+            <li>✓ Receive personalized learning suggestions</li>
+            <li>✓ Generate job-specific resume versions</li>
+        </ul>
+
+        <a href="/accounts/register/" class="primary-btn">
+            Discover Your Career DNA ↗
+        </a>
+    </div>
+
+    <div class="career-card">
+        <div class="career-card-top">
+            <span>YOUR CAREER DNA</span>
+            <span class="sparkle">✦</span>
+        </div>
+
+        <div class="dna-graphic">R</div>
+
+        <h3>Professional Growth Profile</h3>
+
+        <div class="dna-item">
+            <span>Technical Skills</span>
+            <strong>Python · Django · SQL</strong>
+        </div>
+
+        <div class="dna-item">
+            <span>Project Experience</span>
+            <strong>Web Development</strong>
+        </div>
+
+        <div class="dna-item">
+            <span>Career Interest</span>
+            <strong>Software Development</strong>
+        </div>
+
+        <p class="demo-note">
+            Example profile – personalized analysis
+            will be generated from user information.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="workflow" id="how-it-works">
+
+    <div class="section-heading">
+        <span class="section-tag">SIMPLE. SMART. POWERFUL.</span>
+
+        <h2>From Information to Opportunity.</h2>
+
+        <p>Your professional journey in four simple steps.</p>
+    </div>
+
+    <div class="workflow-grid">
+
+        <div class="workflow-card">
+            <span>01</span>
+            <h3>Share Your Story</h3>
+            <p>Enter your education, skills and experience.</p>
+        </div>
+
+        <div class="workflow-card">
+            <span>02</span>
+            <h3>Let AI Build</h3>
+            <p>Generate and improve your resume content.</p>
+        </div>
+
+        <div class="workflow-card">
+            <span>03</span>
+            <h3>Match Your Dream Job</h3>
+            <p>Analyze your resume against job requirements.</p>
+        </div>
+
+        <div class="workflow-card">
+            <span>04</span>
+            <h3>Launch Your Career</h3>
+            <p>Review, download and prepare for interviews.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CALL TO ACTION -->
+<section class="final-cta">
+
+    <span>YOUR NEXT CHAPTER STARTS HERE</span>
+
+    <h2>
+        Don't Just Apply.
+        <br>
+        Make an Impression.
+    </h2>
+
+    <p>
+        Build a resume that tells your story
+        and highlights your potential.
+    </p>
+
+    <a href="/accounts/register/" class="cta-button">
+        Create Your Free Resume ↗
+    </a>
+
+</section>
+
+{% endblock %}

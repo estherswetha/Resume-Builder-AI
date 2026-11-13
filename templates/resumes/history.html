@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Resumes | ResumeGen.AI</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f6f0ff;
+            color: #24113d;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .create-btn {
+            background: #8e2ac4;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .search {
+            margin: 25px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .search button {
+            border: 0;
+            padding: 12px 20px;
+            background: #8127b8;
+            color: white;
+            border-radius: 8px;
+        }
+
+        .resume-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px #0000000a;
+        }
+
+        .resume-card h3 {
+            margin-top: 0;
+        }
+
+        .resume-card p {
+            color: #655a78;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .actions a, .actions button {
+            padding: 9px 13px;
+            background: #eee4fa;
+            color: #6c229c;
+            text-decoration: none;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+        .delete {
+            background: #ffe6e6 !important;
+            color: #a52323 !important;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div>
+            <h1>My Resumes</h1>
+            <p>Your saved ResumeGen.AI documents</p>
+        </div>
+
+        <a href="{% url 'resumes:builder_create' %}" class="create-btn">
+            + Create New Resume
+        </a>
+    </div>
+
+    <form method="GET" class="search">
+        <input type="text"
+               name="q"
+               placeholder="Search by name or job role..."
+               value="{{ query }}">
+
+        <button type="submit">Search</button>
+    </form>
+
+    <p>Total resumes: {{ total_count }}</p>
+
+    {% for resume in resumes %}
+
+        <div class="resume-card">
+
+            <h3>{{ resume.full_name }}</h3>
+
+            <p>{{ resume.target_role }}</p>
+
+            <p>
+                Status: {{ resume.get_status_display }}
+                |
+                Updated: {{ resume.updated_at|date:"d M Y" }}
+            </p>
+
+            <div class="actions">
+
+                <a href="{% url 'resumes:builder_preview' resume.pk %}">
+                    View
+                </a>
+
+                <a href="{% url 'resumes:builder_edit' resume.pk %}">
+                    Edit
+                </a>
+
+                <a href="{% url 'resumes:builder_download' resume.pk %}">
+                    Print PDF
+                </a>
+
+                <form method="POST"
+                      action="{% url 'resumes:builder_delete' resume.pk %}"
+                      onsubmit="return confirm('Delete this resume?');">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="delete">
+                        Delete
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="empty">
+            <h2>No resumes found</h2>
+            <p>Create your first professional resume.</p>
+
+            <a href="{% url 'resumes:builder_create' %}"
+               class="create-btn">
+                Create Resume
+            </a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

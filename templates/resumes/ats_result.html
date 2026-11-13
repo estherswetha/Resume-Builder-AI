@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ATS Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f0ff;
+            padding: 30px;
+            color: #25143d;
+        }
+
+        .card {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .score {
+            font-size: 55px;
+            color: #8a2fc1;
+            font-weight: bold;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 20px;
+            background: #e8f7ed;
+            color: #227d42;
+        }
+
+        .missing {
+            background: #fff0e7;
+            color: #a64e20;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #862bbd;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>ATS Resume Analysis</h1>
+
+    <h2>{{ resume.full_name }}</h2>
+
+    <p>Target role: {{ resume.target_role }}</p>
+
+    <div class="score">{{ score }}%</div>
+
+    <p>Estimated job-description keyword match</p>
+
+    <h3>Matched keywords</h3>
+
+    {% for word in matched %}
+        <span class="tag">{{ word }}</span>
+    {% empty %}
+        <p>No matching keywords found.</p>
+    {% endfor %}
+
+    <h3>Keywords not found in your resume</h3>
+
+    {% for word in missing %}
+        <span class="tag missing">{{ word }}</span>
+    {% empty %}
+        <p>All extracted keywords were found.</p>
+    {% endfor %}
+
+    <p>
+        This is a basic keyword comparison, not an official ATS score
+        or a guarantee that an employer's system will rank your resume
+        in the same way.
+    </p>
+
+    <a href="{% url 'resumes:builder_preview' resume.pk %}">
+        Back to Resume
+    </a>
+
+</div>
+
+</body>
+</html>

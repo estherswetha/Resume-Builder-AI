@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}AI Summary Generator | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.summary-page {
+    max-width: 1000px;
+    margin: 45px auto;
+    padding: 0 22px 60px;
+    color: #59436b;
+}
+
+.summary-page h1 {
+    color: #58396b;
+    font-size: 34px;
+}
+
+.summary-description {
+    color: #887b96;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.summary-card {
+    background: #ffffff;
+    border: 1px solid #ead8f0;
+    border-radius: 19px;
+    padding: 24px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.summary-card h3 {
+    margin: 0 0 7px;
+    color: #573b6b;
+}
+
+.summary-card p {
+    margin: 5px 0;
+    color: #887b96;
+}
+
+.summary-button {
+    border: none;
+    border-radius: 28px;
+    padding: 14px 21px;
+    background: linear-gradient(110deg, #df8bc6, #9861d0);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.summary-button:hover {
+    opacity: .9;
+}
+
+.summary-button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.summary-message {
+    padding: 15px 18px;
+    border-radius: 12px;
+    margin: 16px 0;
+    overflow-wrap: anywhere;
+}
+
+.summary-error {
+    color: #8e2637;
+    background: #fff0f1;
+    border: 1px solid #f1c5ca;
+}
+
+.summary-success {
+    color: #24633d;
+    background: #effaf2;
+    border: 1px solid #c4e8cf;
+}
+
+.summary-warning {
+    color: #805d16;
+    background: #fff8e8;
+    border: 1px solid #f1dfb1;
+}
+
+.summary-back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #9254b7;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.summary-empty {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #ead8f0;
+    color: #887b96;
+}
+
+@media(max-width:700px) {
+    .summary-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary-button {
+        width: 100%;
+    }
+
+    .summary-page h1 {
+        font-size: 27px;
+    }
+}
+</style>
+
+<section class="summary-page">
+
+    <h1>Generate Professional Summaries</h1>
+
+    <p class="summary-description">
+        Select a saved resume. AI will use your education,
+        skills, experience and projects to create an
+        ATS-friendly professional summary.
+    </p>
+
+    <!-- DJANGO MESSAGES -->
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="summary-message
+                {% if message.tags == 'error' %}
+                    summary-error
+                {% elif message.tags == 'success' %}
+                    summary-success
+                {% else %}
+                    summary-warning
+                {% endif %}">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <!-- ACTUAL AI ERROR -->
+    {% if error_message %}
+
+        <div class="summary-message summary-error">
+
+            <strong>AI summary generation failed.</strong>
+
+            <p>{{ error_message }}</p>
+
+            <p>
+                Check your OpenAI API configuration and
+                your VS Code terminal for the full error.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+    <!-- SAVED RESUMES -->
+    {% for resume in resumes %}
+
+        <div class="summary-card">
+
+            <div>
+
+                <h3>{{ resume.title }}</h3>
+
+                <p>
+                    {{ resume.full_name }}
+                    ·
+                    {{ resume.target_role|default:"Target role not set" }}
+                </p>
+
+                {% if resume.professional_summary %}
+
+                    <p>
+                        <strong>Current summary:</strong> Available
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        <strong>Current summary:</strong> Not generated
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+            <form
+                method="post"
+                action="{% url 'resumes:architect_summaries' %}"
+                class="summary-form"
+            >
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="resume_id"
+                    value="{{ resume.pk }}"
+                >
+
+                <button
+                    type="submit"
+                    class="summary-button"
+                >
+                    Generate Summary ↗
+                </button>
+
+            </form>
+
+        </div>
+
+    {% empty %}
+
+        <div class="summary-empty">
+
+            <h3>No saved resumes found.</h3>
+
+            <p>
+                Create a resume first. Then return here
+                to generate your professional summary.
+            </p>
+
+            <a href="{% url 'resumes:builder_create' %}">
+                Create My Resume ↗
+            </a>
+
+        </div>
+
+    {% endfor %}
+
+    <a
+        href="{% url 'resumes:resume_architect' %}"
+        class="summary-back"
+    >
+        ← Back to AI Resume Architect
+    </a>
+
+</section>
+
+<script>
+document.querySelectorAll(".summary-form").forEach(function(form) {
+
+    form.addEventListener("submit", function() {
+
+        const button = form.querySelector("button");
+
+        button.disabled = true;
+        button.textContent = "Generating Summary...";
+
+    });
+
+});
+</script>
+
+{% endblock %}

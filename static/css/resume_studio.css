@@ -1,0 +1,382 @@
+
+.studio-page,
+.preview-page {
+    min-height: 100vh;
+    padding: 55px 7%;
+    background:
+        radial-gradient(circle at 90% 5%,#dff4ff,transparent 30%),
+        linear-gradient(135deg,#f6f0ff,#eef6ff,#f9f3ff);
+}
+
+.studio-heading,
+.preview-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.studio-badge {
+    display: inline-block;
+    padding: 9px 17px;
+    background: #eee5ff;
+    border: 1px solid #d8c6fa;
+    border-radius: 30px;
+    color: #7950b5;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.studio-heading h1,
+.preview-heading h1 {
+    font-family: 'Playfair Display',serif;
+    font-size: clamp(35px,5vw,50px);
+    color: #483268;
+    margin: 18px 0;
+}
+
+.studio-heading h1 span,
+.preview-heading h1 span {
+    color: #8860cb;
+}
+
+.studio-heading p,
+.preview-heading p {
+    color: #817891;
+    font-size: 14px;
+}
+
+.studio-layout {
+    display: grid;
+    grid-template-columns: minmax(0,2fr) minmax(240px,.8fr);
+    gap: 25px;
+    max-width: 1250px;
+    margin: auto;
+    align-items: start;
+}
+
+.resume-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-card,
+.assistant-card,
+.progress-card {
+    padding: 28px;
+    background: rgba(255,255,255,.95);
+    border: 1px solid #e6dafa;
+    border-radius: 19px;
+    box-shadow: 0 10px 30px rgba(115,81,164,.07);
+}
+
+.form-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.step-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border-radius: 13px;
+    color: white;
+    background: linear-gradient(135deg,#a47ce3,#7650c5);
+    font-weight: 800;
+}
+
+.step-icon.blue {
+    background: linear-gradient(135deg,#83c9ee,#6389dc);
+}
+
+.form-card-heading h2 {
+    font-size: 17px;
+    color: #523d71;
+}
+
+.form-card-heading p {
+    color: #9a8ca7;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 20px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label {
+    color: #5c4974;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #ded2ef;
+    border-radius: 10px;
+    outline: none;
+    background: #fcfbff;
+    color: #453354;
+    font-family: inherit;
+    font-size: 13px;
+    transition: .3s;
+}
+
+.form-field textarea {
+    resize: vertical;
+    line-height: 1.7;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+    border-color: #8c64d1;
+    background: white;
+    box-shadow: 0 0 0 4px #eee6ff;
+}
+
+.studio-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 110px;
+}
+
+.assistant-card {
+    background: linear-gradient(145deg,#eee5ff,#e4f4ff);
+}
+
+.assistant-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    background: white;
+    color: #8458c8;
+    border-radius: 15px;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.assistant-card h3,
+.progress-card h3 {
+    color: #563c77;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.assistant-card > p {
+    color: #81748f;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.assistant-tip {
+    background: rgba(255,255,255,.8);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 22px;
+}
+
+.assistant-tip strong {
+    color: #7950bd;
+    font-size: 12px;
+}
+
+.assistant-tip p {
+    color: #84788f;
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 7px;
+}
+
+.progress-card ul {
+    list-style: none;
+}
+
+.progress-card li {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0eaf7;
+    color: #78668b;
+    font-size: 12px;
+}
+
+.generate-button,
+.edit-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 25px;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    background: linear-gradient(110deg,#895bd1,#659cde);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(112,89,194,.2);
+    transition: .3s;
+}
+
+.generate-button:hover,
+.edit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(112,89,194,.3);
+}
+
+.privacy-note {
+    color: #92869d;
+    text-align: center;
+    font-size: 11px;
+}
+
+.form-errors {
+    color: #a52c58;
+    background: #fff0f4;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.preview-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.edit-button {
+    color: #7652ac;
+    background: white;
+    border: 1px solid #d8c6ed;
+    box-shadow: none;
+}
+
+.resume-document {
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 55px;
+    background: white;
+    color: #303047;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(90,65,130,.12);
+}
+
+.document-header {
+    text-align: center;
+    border-bottom: 2px solid #9770d0;
+    padding-bottom: 25px;
+}
+
+.document-header h1 {
+    color: #553d76;
+    font-size: 30px;
+}
+
+.document-header h3 {
+    color: #8060b5;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.document-header p {
+    color: #777;
+    font-size: 11px;
+}
+
+.document-section {
+    margin-top: 25px;
+    line-height: 1.9;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.document-section h2 {
+    color: #7652ad;
+    font-size: 14px;
+    border-bottom: 1px solid #e9def5;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.generated-text {
+    line-height: 2;
+    white-space: normal;
+}
+
+@media(max-width:850px) {
+    .studio-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .studio-sidebar {
+        position: static;
+    }
+}
+
+@media(max-width:600px) {
+    .studio-page,
+    .preview-page {
+        padding: 40px 5%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .resume-document {
+        padding: 25px;
+    }
+}
+
+@media print {
+    body {
+        background: white !important;
+    }
+
+    .navbar,
+    .footer,
+    .preview-heading {
+        display: none !important;
+    }
+
+    .preview-page {
+        padding: 0;
+        background: white !important;
+    }
+
+    .resume-document {
+        max-width: none;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        border-radius: 0;
+    }
+}

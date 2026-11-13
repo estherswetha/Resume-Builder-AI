@@ -1,0 +1,189 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | ResumeGen.AI</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+
+<body>
+
+<div class="auth-page">
+
+    <a href="{% url 'home' %}" class="brand">
+        <span class="brand-icon">R</span>
+        <span>ResumeGen.<b>AI</b></span>
+    </a>
+
+    <main class="auth-layout">
+
+        <section class="welcome-panel">
+            <div class="welcome-content">
+
+                <span class="eyebrow">✦ START YOUR CAREER JOURNEY</span>
+
+                <h1>Create Your <span>Future!</span></h1>
+
+                <p class="welcome-description">
+                    Build your professional identity with AI-powered
+                    resumes, smart career insights and personalized tools.
+                </p>
+
+                <div class="illustration">
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+
+                    <div class="floating-card resume-float">
+                        <div class="mini-card-title">✦ Your Resume</div>
+                        <div class="mini-profile"></div>
+                        <div class="mini-line long"></div>
+                        <div class="mini-line"></div>
+                        <div class="mini-line short"></div>
+                        <div class="mini-check">✓</div>
+                    </div>
+
+                    <div class="floating-card chart-float">
+                        <span class="chart-title">Career Growth</span>
+                        <div class="chart-bars">
+                            <i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <span class="chart-arrow">↗</span>
+                    </div>
+
+                    <div class="ai-orb">
+                        <span>AI</span>
+                        <small>✦</small>
+                    </div>
+
+                    <div class="character">
+                        <div class="character-hair"></div>
+                        <div class="character-face">
+                            <span class="eye eye-left"></span>
+                            <span class="eye eye-right"></span>
+                            <span class="smile"></span>
+                        </div>
+                        <div class="character-neck"></div>
+                        <div class="character-body">
+                            <span class="hoodie-mark">R</span>
+                        </div>
+                        <div class="headphone headphone-left"></div>
+                        <div class="headphone headphone-right"></div>
+                    </div>
+
+                    <div class="laptop">
+                        <div class="laptop-logo">R</div>
+                        <div class="laptop-base"></div>
+                    </div>
+
+                    <div class="book-stack">
+                        <div>RESUME</div>
+                        <div>SKILLS</div>
+                        <div>PROJECTS</div>
+                    </div>
+                </div>
+
+                <div class="welcome-note">
+                    <span class="note-icon">✦</span>
+                    <div>
+                        <strong>Your next opportunity starts here.</strong>
+                        <p>Create. Grow. Succeed.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="login-panel">
+
+            <div class="login-card">
+
+                <div class="card-brand">
+                    <span class="brand-icon">R</span>
+                    <span>ResumeGen.<b>AI</b></span>
+                </div>
+
+                <h2>Create Your Account</h2>
+
+                <p class="card-description">
+                    Join ResumeGen.AI and start building your career profile.
+                </p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="{% url 'accounts:register' %}">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="message error">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+
+                        <div class="input-group">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            <div class="input-wrap">
+                                {{ field }}
+                            </div>
+
+                            {% if field.help_text %}
+                                <small class="field-help">
+                                    {{ field.help_text|safe }}
+                                </small>
+                            {% endif %}
+
+                            {% if field.errors %}
+                                <small class="field-error">
+                                    {{ field.errors|striptags }}
+                                </small>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                    <button type="submit" class="login-button">
+                        Create Account <span>↗</span>
+                    </button>
+
+                </form>
+
+                <div class="divider">
+                    <span></span>
+                    <p>YOUR AI CAREER WORKSPACE</p>
+                    <span></span>
+                </div>
+
+                <p class="register-text">
+                    Already have an account?
+                    <a href="{% url 'accounts:login' %}">Log In →</a>
+                </p>
+
+                <a href="{% url 'home' %}" class="back-home">
+                    ← Back to Home
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

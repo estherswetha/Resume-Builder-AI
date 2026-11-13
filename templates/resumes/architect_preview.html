@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ resume.full_name }} | Resume Preview
+{% endblock %}
+
+{% block content %}
+
+<style>
+.preview-page {
+    max-width: 950px;
+    margin: 35px auto;
+    padding: 0 20px 60px;
+    color: #292536;
+}
+
+.resume-sheet {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 10px 35px rgba(40,20,55,.1);
+    padding: 44px 54px;
+    min-height: 800px;
+}
+
+.resume-sheet.modern .resume-head {
+    background: #f6eafa;
+    border-left: 6px solid #a45fc5;
+    padding: 20px;
+    margin: -12px -12px 25px;
+}
+
+.resume-sheet.classic {
+    font-family: Georgia, serif;
+    border-top: 8px solid #333;
+}
+
+.resume-sheet.minimal {
+    border: 0;
+    box-shadow: none;
+}
+
+.resume-head h1 {
+    font-size: 30px;
+    margin: 0;
+    color: #523567;
+}
+
+.resume-head p {
+    margin: 7px 0;
+    color: #655d6d;
+}
+
+.resume-section {
+    margin: 22px 0;
+}
+
+.resume-section h2 {
+    font-size: 15px;
+    letter-spacing: .08em;
+    color: #824aa5;
+    border-bottom: 1px solid #d8c4e2;
+    padding-bottom: 7px;
+}
+
+.resume-section p {
+    white-space: pre-line;
+    line-height: 1.55;
+}
+
+.resume-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 22px 0;
+    flex-wrap: wrap;
+}
+
+.resume-actions a {
+    border-radius: 24px;
+    padding: 12px 20px;
+    background: #995ac5;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.resume-actions .secondary {
+    background: #6c587d;
+}
+
+@media print {
+
+    body {
+        background: white !important;
+    }
+
+    .preview-page {
+        margin: 0;
+        padding: 0;
+    }
+
+    .resume-sheet {
+        box-shadow: none;
+        border: 0;
+        border-radius: 0;
+        max-width: none;
+        min-height: 0;
+        padding: 0;
+    }
+
+    .resume-actions,
+    .site-header,
+    nav,
+    footer {
+        display: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+}
+</style>
+
+<section class="preview-page">
+
+    {% if not print_mode %}
+
+        <div class="resume-actions">
+
+            <a
+                class="secondary"
+                href="{% url 'resumes:builder_edit' resume.pk %}"
+            >
+                Edit Resume
+            </a>
+
+            <a href="{% url 'resumes:architect_download' resume.pk %}">
+                Print / Save as PDF ↗
+            </a>
+
+            <a
+                class="secondary"
+                href="{% url 'resumes:architect_templates' %}"
+            >
+                Change Template
+            </a>
+
+        </div>
+
+    {% endif %}
+
+    <article class="resume-sheet {{ template_style }}">
+
+        <div class="resume-head">
+
+            <h1>{{ resume.full_name }}</h1>
+
+            <p>{{ resume.target_role }}</p>
+
+            <p>
+                {{ resume.email }}
+
+                {% if resume.phone %}
+                    · {{ resume.phone }}
+                {% endif %}
+
+                {% if resume.location %}
+                    · {{ resume.location }}
+                {% endif %}
+            </p>
+
+            <p>
+
+                {% if resume.linkedin %}
+                    <a href="{{ resume.linkedin }}">LinkedIn</a>
+                {% endif %}
+
+                {% if resume.github %}
+                    · <a href="{{ resume.github }}">GitHub</a>
+                {% endif %}
+
+                {% if resume.portfolio %}
+                    · <a href="{{ resume.portfolio }}">Portfolio</a>
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        {% if resume.professional_summary %}
+
+            <section class="resume-section">
+
+                <h2>PROFILE SUMMARY</h2>
+
+                <p>{{ resume.professional_summary }}</p>
+
+            </section>
+
+        {% endif %}
+
+        {% if resume.skills %}
+
+            <section class="resume-section">
+
+                <h2>SKILLS</h2>
+
+                <p>{{ resume.skills }}</p>
+
+            </section>
+
+        {% endif %}
+
+        {% if resume.experience %}
+
+            <section class="resume-section">
+
+                <h2>EXPERIENCE / IMPORTED CONTENT</h2>
+
+                <p>{{ resume.experience }}</p>
+
+            </section>
+
+        {% endif %}
+
+        {% if resume.projects %}
+
+            <section class="resume-section">
+
+                <h2>PROJECTS</h2>
+
+                <p>{{ resume.projects }}</p>
+
+            </section>
+
+        {% endif %}
+
+        {% if resume.education %}
+
+            <section class="resume-section">
+
+                <h2>EDUCATION</h2>
+
+                <p>{{ resume.education }}</p>
+
+            </section>
+
+        {% endif %}
+
+        {% if resume.certifications %}
+
+            <section class="resume-section">
+
+                <h2>CERTIFICATIONS</h2>
+
+                <p>{{ resume.certifications }}</p>
+
+            </section>
+
+        {% endif %}
+
+    </article>
+
+</section>
+
+{% if print_mode %}
+
+<script>
+window.addEventListener("load", function() {
+    window.print();
+});
+</script>
+
+{% endif %}
+
+{% endblock %}

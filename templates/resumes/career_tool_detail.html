@@ -1,0 +1,190 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.career-page {
+    min-height: 85vh;
+    padding: 55px 5%;
+    background: linear-gradient(135deg, #fff6fb, #f1ebff);
+}
+
+.career-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.career-header {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+.career-header small {
+    color: #c477b5;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.career-header h1 {
+    font-family: Georgia, serif;
+    font-size: 40px;
+    color: #513563;
+    margin: 18px 0;
+}
+
+.career-header p {
+    color: #887a96;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.career-tools-title {
+    color: #513563;
+    margin: 25px 0;
+}
+
+.career-tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.career-tool {
+    padding: 25px;
+    background: white;
+    border: 1px solid #ead7f0;
+    border-radius: 18px;
+    color: #624a73;
+    transition: .25s;
+}
+
+.career-tool:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(150, 80, 180, .10);
+}
+
+.career-tool span {
+    color: #ac64ca;
+    font-size: 19px;
+    margin-right: 10px;
+}
+
+.career-action {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.career-button {
+    display: inline-block;
+    background: linear-gradient(90deg, #dc91c7, #9863d4);
+    color: white;
+    text-decoration: none;
+    padding: 14px 27px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+.career-button:hover {
+    color: white;
+    opacity: .9;
+}
+
+.career-back {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: #9653b9;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media(max-width: 650px) {
+    .career-tools {
+        grid-template-columns: 1fr;
+    }
+
+    .career-header h1 {
+        font-size: 29px;
+    }
+}
+</style>
+
+<section class="career-page">
+
+    <div class="career-container">
+
+        <div class="career-header">
+
+            <small>{{ feature.number }}</small>
+
+            <h1>{{ feature.title }}</h1>
+
+            <p>{{ feature.description }}</p>
+
+        </div>
+
+        <h2 class="career-tools-title">
+            Explore Your Workspace
+        </h2>
+
+        <div class="career-tools">
+
+            {% for tool in feature.tools %}
+
+                <div class="career-tool">
+                    <span>✦</span>
+                    {{ tool }}
+                </div>
+
+            {% empty %}
+
+                <p>No tools available.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="career-action">
+
+            {% if feature_slug == "architect" %}
+
+                <a href="{% url 'resumes:builder_create' %}"
+                   class="career-button">
+                    Start Building My Resume ↗
+                </a>
+
+            {% elif feature_slug == "ats-intelligence" %}
+
+                <a href="{% url 'resumes:builder_history' %}"
+                   class="career-button">
+                    Select My Resume ↗
+                </a>
+
+            {% elif feature_slug == "career-vault" %}
+
+                <a href="{% url 'resumes:builder_history' %}"
+                   class="career-button">
+                    Open My Resume Vault ↗
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'resumes:builder_create' %}"
+                   class="career-button">
+                    Continue to Resume Builder ↗
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        <a href="{% url 'features' %}" class="career-back">
+            ← Back to All Features
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

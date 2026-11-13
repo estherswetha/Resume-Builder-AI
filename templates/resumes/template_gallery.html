@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Resume Template | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.tool-page {
+    max-width: 1050px;
+    margin: 45px auto;
+    padding: 0 22px 60px;
+    color: #59436b;
+}
+
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.template-card {
+    background: white;
+    border: 1px solid #ead8f0;
+    border-radius: 18px;
+    padding: 22px;
+    cursor: pointer;
+}
+
+.template-card h3 {
+    color: #644477;
+}
+
+.sample {
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 14px;
+    margin: 12px 0;
+    background: white;
+}
+
+.sample .bar {
+    height: 12px;
+    background: #dba4d9;
+    margin-bottom: 12px;
+    width: 60%;
+}
+
+.sample p {
+    height: 6px;
+    background: #e7e2ea;
+    margin: 9px 0;
+}
+
+.tool-page label {
+    display: block;
+    font-weight: 700;
+    margin: 14px 0 7px;
+}
+
+.tool-page select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #decce8;
+    border-radius: 11px;
+    font: inherit;
+}
+
+.tool-btn {
+    border: 0;
+    border-radius: 28px;
+    padding: 13px 22px;
+    background: linear-gradient(110deg,#df8bc6,#9861d0);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.muted {
+    color: #887b96;
+}
+
+@media(max-width:750px) {
+    .template-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<section class="tool-page">
+
+    <h1>Choose a Professional Template</h1>
+
+    <p class="muted">
+        Select your resume and choose a visual style.
+        Your choice will be remembered in your browser session.
+    </p>
+
+    {% if resumes %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <label for="resume_id">
+                Choose Saved Resume
+            </label>
+
+            <select
+                id="resume_id"
+                name="resume_id"
+                required
+            >
+
+                <option value="">
+                    Select a resume
+                </option>
+
+                {% for resume in resumes %}
+
+                    <option value="{{ resume.pk }}">
+                        {{ resume.title }} — {{ resume.full_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <div class="template-grid">
+
+                {% for item in template_choices %}
+
+                    <label class="template-card">
+
+                        <input
+                            type="radio"
+                            name="template_style"
+                            value="{{ item.id }}"
+                            {% if forloop.first %}checked{% endif %}
+                        >
+
+                        <h3>{{ item.name }}</h3>
+
+                        <p class="muted">
+                            {{ item.description }}
+                        </p>
+
+                        <div class="sample">
+
+                            <div class="bar"></div>
+
+                            <p></p>
+                            <p style="width:85%"></p>
+                            <p style="width:65%"></p>
+
+                            <hr>
+
+                            <p style="width:92%"></p>
+                            <p style="width:70%"></p>
+
+                        </div>
+
+                    </label>
+
+                {% endfor %}
+
+            </div>
+
+            <button class="tool-btn" type="submit">
+                Apply Template and Preview ↗
+            </button>
+
+        </form>
+
+    {% else %}
+
+        <p>No saved resumes yet.</p>
+
+        <a href="{% url 'resumes:builder_create' %}">
+            Create a Resume ↗
+        </a>
+
+    {% endif %}
+
+    <p>
+        <a href="{% url 'resumes:resume_architect' %}">
+            ← Back to AI Resume Architect
+        </a>
+    </p>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,368 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.studio-page {
+    padding: 55px 5%;
+    background: #fff9fd;
+    min-height: 85vh;
+}
+
+.studio-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.studio-heading h1 {
+    font-size: 38px;
+    color: #49305f;
+    font-weight: 800;
+}
+
+.studio-heading p {
+    color: #887a96;
+    font-size: 17px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.feature-card {
+    background: white;
+    border: 1px solid #f1d9ed;
+    border-radius: 23px;
+    padding: 36px;
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 35px rgba(160, 85, 190, 0.12);
+    border-color: #d8a7ee;
+}
+
+.feature-card.highlight {
+    background: linear-gradient(
+        135deg,
+        #fff0fa,
+        #f5edff
+    );
+    border-color: #dda9ef;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 19px;
+    background: linear-gradient(
+        135deg,
+        #f8dff3,
+        #e9d9ff
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a44dcc;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.feature-number {
+    color: #c477b5;
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 17px;
+}
+
+.feature-card h2 {
+    color: #513b62;
+    font-family: Georgia, serif;
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #91839d;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.explore-link {
+    color: #9a4bc8;
+    font-weight: 800;
+    text-decoration: none;
+    margin-top: auto;
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+.explore-link:hover {
+    color: #7132a5;
+    transform: translateX(4px);
+}
+
+@media(max-width: 1000px) {
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 650px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .studio-heading h1 {
+        font-size: 29px;
+    }
+
+    .feature-card {
+        padding: 27px;
+    }
+}
+</style>
+def feature_detail(request, feature_slug):
+    """Open the selected career feature."""
+
+    feature = FEATURE_PAGES.get(feature_slug)
+
+    if feature is None:
+        raise Http404("Requested feature does not exist.")
+
+    # AI Resume Architect gets its own functional workspace.
+    if feature_slug == "architect":
+
+        if request.user.is_authenticated:
+            user_resumes = BuilderResume.objects.filter(
+                user=request.user
+            )
+        else:
+            user_resumes = BuilderResume.objects.none()
+
+        return render(
+            request,
+            "resumes/architect.html",
+            {
+                "feature": feature,
+                "resumes": user_resumes[:5],
+                "total_resumes": user_resumes.count(),
+            },
+        )
+
+    # Other five feature pages keep their existing detail page.
+    return render(
+        request,
+        "resumes/feature_detail.html",
+        {
+            "feature": feature,
+            "feature_slug": feature_slug,
+        },
+    )
+
+<section class="studio-page">
+
+    <!-- PAGE HEADING -->
+
+    <div class="studio-heading">
+
+        <h1>Powerful AI Resume Features</h1>
+
+        <p>
+            Your complete AI career companion to build,
+            optimize and grow your professional journey.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <!-- FEATURE 1: AI RESUME ARCHITECT -->
+
+        <div class="feature-card highlight">
+
+            <div class="feature-icon">✦</div>
+
+            <div class="feature-number">
+                01 / CREATE
+            </div>
+
+            <h2>AI Resume Architect</h2>
+
+            <p>
+                Turn your basic information into an impressive,
+                professional and ATS-friendly resume using AI.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'architect' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+
+        <!-- FEATURE 2: ATS INTELLIGENCE -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">◎</div>
+
+            <div class="feature-number">
+                02 / ANALYZE
+            </div>
+
+            <h2>ATS Intelligence</h2>
+
+            <p>
+                Analyze resume formatting, keywords and
+                compatibility with applicant tracking systems.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'ats-intelligence' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+
+        <!-- FEATURE 3: JOB MATCH AI -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">⌘</div>
+
+            <div class="feature-number">
+                03 / MATCH
+            </div>
+
+            <h2>Job Match AI</h2>
+
+            <p>
+                Compare your resume with a job description
+                and identify relevant missing skills.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'job-match' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+
+        <!-- FEATURE 4: SMART SKILL ENHANCER -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">↗</div>
+
+            <div class="feature-number">
+                04 / IMPROVE
+            </div>
+
+            <h2>Smart Skill Enhancer</h2>
+
+            <p>
+                Transform simple project descriptions into
+                clear, achievement-focused statements.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'skill-enhancer' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+
+        <!-- FEATURE 5: AI INTERVIEW COACH -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">◇</div>
+
+            <div class="feature-number">
+                05 / PREPARE
+            </div>
+
+            <h2>AI Interview Coach</h2>
+
+            <p>
+                Generate interview questions based on your
+                resume, skills and target job role.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'interview-coach' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+
+        <!-- FEATURE 6: CAREER VAULT -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">▤</div>
+
+            <div class="feature-number">
+                06 / MANAGE
+            </div>
+
+            <h2>Career Vault</h2>
+
+            <p>
+                Save multiple resume versions, manage
+                your history and download PDF copies.
+            </p>
+
+            <a
+                href="{% url 'resumes:career_tool_detail' 'career-vault' %}"
+                class="explore-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Explore feature ↗
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

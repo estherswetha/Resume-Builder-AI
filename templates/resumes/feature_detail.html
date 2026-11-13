@@ -1,0 +1,225 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.feature-detail-page {
+    min-height: 85vh;
+    padding: 55px 5%;
+    background: linear-gradient(
+        135deg,
+        #fff7fc,
+        #f3efff
+    );
+}
+
+.feature-detail-container {
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.feature-detail-header {
+    text-align: center;
+    padding: 35px 15px;
+}
+
+.feature-detail-header small {
+    color: #c477b5;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.feature-detail-header h1 {
+    color: #593b70;
+    font-size: 38px;
+    margin: 15px 0;
+}
+
+.feature-detail-header p {
+    color: #887c98;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.feature-tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.feature-tool-card {
+    background: #fff;
+    border: 1px solid #eddcf2;
+    border-radius: 17px;
+    padding: 23px;
+    color: #624a73;
+    line-height: 1.6;
+    transition: .25s ease;
+}
+
+.feature-tool-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(160, 85, 190, .10);
+}
+
+.feature-tool-card span {
+    color: #a85bc6;
+    font-weight: 800;
+    margin-right: 9px;
+}
+
+.feature-action {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.feature-action a {
+    display: inline-block;
+    padding: 13px 25px;
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    background: linear-gradient(
+        90deg,
+        #dc91c7,
+        #9863d4
+    );
+}
+
+.feature-action a:hover {
+    opacity: .9;
+}
+
+.feature-back-link {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 0;
+    color: #9854b9;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.feature-back-link:hover {
+    color: #7132a5;
+}
+
+@media (max-width: 650px) {
+
+    .feature-tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-detail-header h1 {
+        font-size: 29px;
+    }
+}
+</style>
+
+
+<section class="feature-detail-page">
+
+    <div class="feature-detail-container">
+
+        <!-- FEATURE HEADER -->
+
+        <header class="feature-detail-header">
+
+            <small>{{ feature.number }}</small>
+
+            <h1>{{ feature.title }}</h1>
+
+            <p>
+                {{ feature.description }}
+            </p>
+
+        </header>
+
+
+        <!-- FEATURE TOOLS -->
+
+        <h2 style="color:#593b70; margin-bottom:22px;">
+            Explore Your Feature
+        </h2>
+
+        <div class="feature-tool-grid">
+
+            {% for tool in feature.tools %}
+
+                <div class="feature-tool-card">
+
+                    <span>✦</span>
+
+                    {{ tool }}
+
+                </div>
+
+            {% empty %}
+
+                <p>No tools are currently available.</p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- FEATURE ACTION -->
+
+        <div class="feature-action">
+
+            {% if feature_slug == "architect" %}
+
+                <a href="{% url 'resumes:builder_create' %}">
+                    Start Building My Resume ↗
+                </a>
+
+            {% elif feature_slug == "ats-intelligence" %}
+
+                <a href="{% url 'resumes:builder_history' %}">
+                    Select My Resume ↗
+                </a>
+
+            {% elif feature_slug == "job-match" %}
+
+                <a href="{% url 'resumes:builder_create' %}">
+                    Create or Update My Resume ↗
+                </a>
+
+            {% elif feature_slug == "skill-enhancer" %}
+
+                <a href="{% url 'resumes:builder_create' %}">
+                    Improve My Resume Content ↗
+                </a>
+
+            {% elif feature_slug == "interview-coach" %}
+
+                <a href="{% url 'resumes:builder_history' %}">
+                    Select My Resume ↗
+                </a>
+
+            {% elif feature_slug == "career-vault" %}
+
+                <a href="{% url 'resumes:builder_history' %}">
+                    Open My Career Vault ↗
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- BACK TO FEATURES -->
+
+        <a
+            href="{% url 'features' %}"
+            class="feature-back-link"
+        >
+            ← Back to All Features
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

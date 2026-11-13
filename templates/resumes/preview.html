@@ -1,0 +1,429 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ resume.full_name }} | ResumeGen.AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            background: #f4f0fa;
+            font-family: Arial, sans-serif;
+            color: #25213b;
+        }
+
+        .topbar {
+            max-width: 1050px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #7024b8;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 19px;
+            border: none;
+            border-radius: 9px;
+            background: #7529bb;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn.secondary {
+            background: white;
+            color: #7024b8;
+            border: 1px solid #d8c2ef;
+        }
+
+        .resume-paper {
+            max-width: 850px;
+            min-height: 1000px;
+            margin: auto;
+            padding: 55px 65px;
+            background: white;
+            box-shadow: 0 8px 35px rgba(55, 30, 80, 0.12);
+        }
+
+        .resume-header {
+            text-align: center;
+            border-bottom: 3px solid #7828b8;
+            padding-bottom: 22px;
+            margin-bottom: 25px;
+        }
+
+        .resume-header h1 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            color: #25143d;
+            text-transform: uppercase;
+        }
+
+        .role {
+            color: #7828b8;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 13px;
+        }
+
+        .contact {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+        }
+
+        .contact a {
+            color: #7024b8;
+            text-decoration: none;
+        }
+
+        .resume-section {
+            margin: 25px 0;
+        }
+
+        .resume-section h2 {
+            font-size: 17px;
+            color: #7024b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #d9c4ec;
+            padding-bottom: 8px;
+            margin-bottom: 13px;
+        }
+
+        .resume-section p {
+            font-size: 14px;
+            line-height: 1.75;
+            color: #333;
+            margin: 5px 0;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            color: #888 !important;
+            font-style: italic;
+        }
+
+        .status {
+            display: inline-block;
+            background: #e9f8ee;
+            color: #218447;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        .ats-card {
+            max-width: 850px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .ats-card h2 {
+            color: #7024b8;
+        }
+
+        .ats-card p {
+            line-height: 1.7;
+        }
+
+        @media(max-width: 650px) {
+            body {
+                padding: 15px 8px;
+            }
+
+            .resume-paper {
+                padding: 30px 22px;
+                min-height: auto;
+            }
+
+            .resume-header h1 {
+                font-size: 25px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .topbar,
+            .no-print,
+            .ats-card {
+                display: none !important;
+            }
+
+            .resume-paper {
+                max-width: none;
+                min-height: auto;
+                padding: 0;
+                box-shadow: none;
+            }
+
+            .resume-section {
+                break-inside: avoid;
+            }
+
+            a {
+                color: #222 !important;
+                text-decoration: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="topbar no-print">
+
+    <div class="logo">
+        ResumeGen.AI
+    </div>
+
+    <div class="actions">
+
+        <a href="{% url 'resumes:builder_history' %}"
+           class="btn secondary">
+            My Resumes
+        </a>
+
+        <a href="{% url 'resumes:builder_edit' resume.pk %}"
+           class="btn secondary">
+            Edit Resume
+        </a>
+
+        <button onclick="window.print()" class="btn">
+            Download PDF ↓
+        </button>
+
+    </div>
+</div>
+
+
+<!-- ==============================
+     PROFESSIONAL RESUME
+============================== -->
+
+<div class="resume-paper">
+
+    <header class="resume-header">
+
+        <h1>{{ resume.full_name }}</h1>
+
+        <div class="role">
+            {{ resume.target_role }}
+        </div>
+
+        <div class="contact">
+
+            {% if resume.email %}
+                {{ resume.email }}
+            {% endif %}
+
+            {% if resume.phone %}
+                | {{ resume.phone }}
+            {% endif %}
+
+            {% if resume.location %}
+                | {{ resume.location }}
+            {% endif %}
+
+            <br>
+
+            {% if resume.linkedin %}
+                <a href="{{ resume.linkedin }}">
+                    LinkedIn
+                </a>
+            {% endif %}
+
+            {% if resume.github %}
+                | <a href="{{ resume.github }}">
+                    GitHub
+                </a>
+            {% endif %}
+
+            {% if resume.portfolio %}
+                | <a href="{{ resume.portfolio }}">
+                    Portfolio
+                </a>
+            {% endif %}
+
+        </div>
+
+        <span class="status">
+            {{ resume.get_status_display }}
+        </span>
+
+    </header>
+
+
+    <!-- PROFESSIONAL SUMMARY -->
+
+    <section class="resume-section">
+
+        <h2>Professional Summary</h2>
+
+        {% if resume.professional_summary %}
+            <p>{{ resume.professional_summary }}</p>
+        {% else %}
+            <p class="empty">
+                No professional summary generated yet.
+            </p>
+        {% endif %}
+
+    </section>
+
+
+    <!-- EDUCATION -->
+
+    <section class="resume-section">
+
+        <h2>Education</h2>
+
+        {% if resume.education %}
+            <p>{{ resume.education }}</p>
+        {% else %}
+            <p class="empty">Education details not provided.</p>
+        {% endif %}
+
+    </section>
+
+
+    <!-- EXPERIENCE -->
+
+    <section class="resume-section">
+
+        <h2>Work Experience</h2>
+
+        {% if resume.experience %}
+            <p>{{ resume.experience }}</p>
+        {% else %}
+            <p class="empty">No work experience provided.</p>
+        {% endif %}
+
+    </section>
+
+
+    <!-- SKILLS -->
+
+    <section class="resume-section">
+
+        <h2>Technical & Soft Skills</h2>
+
+        {% if resume.skills %}
+            <p>{{ resume.skills }}</p>
+        {% else %}
+            <p class="empty">No skills provided.</p>
+        {% endif %}
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section class="resume-section">
+
+        <h2>Projects</h2>
+
+        {% if resume.projects %}
+            <p>{{ resume.projects }}</p>
+        {% else %}
+            <p class="empty">No projects provided.</p>
+        {% endif %}
+
+    </section>
+
+
+    <!-- CERTIFICATIONS -->
+
+    <section class="resume-section">
+
+        <h2>Certifications</h2>
+
+        {% if resume.certifications %}
+            <p>{{ resume.certifications }}</p>
+        {% else %}
+            <p class="empty">No certifications provided.</p>
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<!-- ==============================
+     ATS ANALYSIS
+============================== -->
+
+{% if show_ats %}
+
+<div class="ats-card no-print">
+
+    <h2>ATS Keyword Analysis</h2>
+
+    <h3>ATS Match Score: {{ ats_score }}%</h3>
+
+    <p><strong>Matched Keywords:</strong></p>
+
+    {% for keyword in matched_keywords %}
+        <span>{{ keyword }}{% if not forloop.last %}, {% endif %}</span>
+    {% empty %}
+        <p>No matching keywords found.</p>
+    {% endfor %}
+
+    <p><strong>Missing Keywords:</strong></p>
+
+    {% for keyword in missing_keywords %}
+        <span>{{ keyword }}{% if not forloop.last %}, {% endif %}</span>
+    {% empty %}
+        <p>No missing keywords found.</p>
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+
+</body>
+</html>

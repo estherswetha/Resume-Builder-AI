@@ -1,0 +1,184 @@
+
+{% extends 'base.html' %}
+
+{% block title %}AI Resume Studio | ResumeGen AI{% endblock %}
+
+{% block content %}
+
+<div class="studio-page">
+
+    <div class="studio-heading">
+        <span class="studio-badge">✦ YOUR AI CAREER STUDIO</span>
+
+        <h1>Create Your <span>Dream Resume.</span></h1>
+
+        <p>
+            Share your professional journey.
+            Let AI transform it into a powerful resume.
+        </p>
+    </div>
+
+    <div class="studio-layout">
+
+        <form method="POST" class="resume-form">
+
+            {% csrf_token %}
+
+            <div class="form-card">
+
+                <div class="form-card-heading">
+                    <span class="step-icon">01</span>
+                    <div>
+                        <h2>Personal Information</h2>
+                        <p>Let's get to know you.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Full Name</label>
+                        {{ form.full_name }}
+                    </div>
+
+                    <div class="form-field">
+                        <label>Email Address</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="form-field">
+                        <label>Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="form-field">
+                        <label>Location</label>
+                        {{ form.location }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-card">
+
+                <div class="form-card-heading">
+                    <span class="step-icon blue">02</span>
+                    <div>
+                        <h2>Choose Your Career Path</h2>
+                        <p>Which job are you targeting?</p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Target Job Role</label>
+                    {{ form.target_role }}
+                </div>
+
+            </div>
+
+            <div class="form-card">
+
+                <div class="form-card-heading">
+                    <span class="step-icon">03</span>
+                    <div>
+                        <h2>Education & Skills</h2>
+                        <p>Showcase your knowledge.</p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Education Details</label>
+                    {{ form.education }}
+                </div>
+
+                <div class="form-field">
+                    <label>Technical & Soft Skills</label>
+                    {{ form.skills }}
+                </div>
+
+            </div>
+
+            <div class="form-card">
+
+                <div class="form-card-heading">
+                    <span class="step-icon blue">04</span>
+                    <div>
+                        <h2>Experience & Projects</h2>
+                        <p>Highlight what you have accomplished.</p>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label>Work Experience</label>
+                    {{ form.experience }}
+                </div>
+
+                <div class="form-field">
+                    <label>Projects</label>
+                    {{ form.projects }}
+                </div>
+
+                <div class="form-field">
+                    <label>Certifications</label>
+                    {{ form.certifications }}
+                </div>
+
+            </div>
+
+            {% if form.errors %}
+                <div class="form-errors">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="generate-button">
+                ✦ Generate My AI Resume
+                <span>→</span>
+            </button>
+
+            <p class="privacy-note">
+                Your information will be used to create your resume.
+                Review AI-generated content before using it.
+            </p>
+
+        </form>
+
+        <aside class="studio-sidebar">
+
+            <div class="assistant-card">
+                <div class="assistant-icon">✦</div>
+
+                <h3>Your AI Resume Assistant</h3>
+
+                <p>
+                    I'll help you create a professional,
+                    clear and job-focused resume.
+                </p>
+
+                <div class="assistant-tip">
+                    <strong>💡 Pro Tip</strong>
+                    <p>
+                        Include real project details,
+                        technologies used and your actual contribution.
+                    </p>
+                </div>
+            </div>
+
+            <div class="progress-card">
+                <h3>Your Resume Checklist</h3>
+
+                <ul>
+                    <li>✓ Personal information</li>
+                    <li>✓ Career target</li>
+                    <li>✓ Education details</li>
+                    <li>✓ Skills and projects</li>
+                    <li>✓ Final AI generation</li>
+                </ul>
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+{% endblock %}

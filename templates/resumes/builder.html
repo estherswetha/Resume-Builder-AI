@@ -1,0 +1,409 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Resume | ResumeGen.AI</title>
+
+    <link rel="stylesheet" href="{% static 'resumes/builder.css' %}">
+    <script src="{% static 'resumes/builder.js' %}" defer></script>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a class="brand" href="/">✦ ResumeGen.AI</a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="{% url 'resumes:builder_history' %}">My Resumes</a>
+        <a href="{% url 'resumes:builder_create' %}" class="nav-active">
+            Build Resume
+        </a>
+    </nav>
+</header>
+
+<main class="page">
+
+    <section class="hero">
+        <span>✦ YOUR AI CAREER STUDIO</span>
+        <h1>Create Your Dream Resume.</h1>
+        <p>
+            Share your professional journey.
+            Let AI transform it into a powerful, job-focused resume.
+        </p>
+    </section>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        <div class="message error">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <div class="layout">
+
+        <!-- LEFT: RESUME BUILDER -->
+
+        <section class="builder">
+
+            <form method="POST" id="resumeForm" novalidate>
+
+                {% csrf_token %}
+
+                <!-- FOUR STEP NAVIGATION -->
+
+                <div class="steps">
+
+                    <button type="button" class="step active" data-step="1">
+                        <b>01</b>
+                        <span>Personal</span>
+                    </button>
+
+                    <button type="button" class="step" data-step="2">
+                        <b>02</b>
+                        <span>Career Path</span>
+                    </button>
+
+                    <button type="button" class="step" data-step="3">
+                        <b>03</b>
+                        <span>Education &amp; Skills</span>
+                    </button>
+
+                    <button type="button" class="step" data-step="4">
+                        <b>04</b>
+                        <span>Experience &amp; Projects</span>
+                    </button>
+
+                </div>
+
+                <!-- VOICE INPUT TOOLBAR -->
+
+                <div class="voice-banner">
+
+                    <div>
+                        <strong>🎙 Build your resume with your voice</strong>
+                        <p>
+                            Choose a language, then press the microphone
+                            beside a field and speak.
+                        </p>
+                    </div>
+
+                    <select id="voiceLanguage" aria-label="Voice language">
+                        <option value="en-IN">English (India)</option>
+                        <option value="ta-IN">Tamil</option>
+                        <option value="hi-IN">Hindi</option>
+                    </select>
+
+                </div>
+
+                <div id="voiceStatus" class="voice-status" role="status">
+                    Voice input is ready.
+                </div>
+
+                <!-- STEP 1: PERSONAL INFORMATION -->
+
+                <section class="form-section active" data-section="1">
+
+                    <div class="section-heading">
+                        <b>01</b>
+                        <div>
+                            <h2>Personal Information</h2>
+                            <p>Let's get to know you.</p>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+
+                        {% for field in form %}
+                            {% if field.name == "full_name" or field.name == "email" or field.name == "phone" or field.name == "location" or field.name == "linkedin" or field.name == "portfolio" or field.name == "github" %}
+
+                                <div class="field">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}
+                                            <span>*</span>
+                                        {% endif %}
+                                    </label>
+
+                                    <div class="withvoice">
+                                        {{ field }}
+                                        <button type="button" class="voice-btn">
+                                            🎙 Voice
+                                        </button>
+                                    </div>
+
+                                    {% for error in field.errors %}
+                                        <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </section>
+
+                <!-- STEP 2: CAREER PATH -->
+
+                <section class="form-section" data-section="2" hidden>
+
+                    <div class="section-heading">
+                        <b>02</b>
+                        <div>
+                            <h2>Choose Your Career Path</h2>
+                            <p>Which job are you targeting?</p>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+
+                        {% for field in form %}
+                            {% if field.name == "career_level" or field.name == "target_role" or field.name == "job_description" %}
+
+                                <div class="field full-width">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}
+                                            <span>*</span>
+                                        {% endif %}
+                                    </label>
+
+                                    <div class="withvoice">
+                                        {{ field }}
+                                        <button type="button" class="voice-btn">
+                                            🎙 Voice
+                                        </button>
+                                    </div>
+
+                                    {% if field.help_text %}
+                                        <small class="help-text">
+                                            {{ field.help_text }}
+                                        </small>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </section>
+
+                <!-- STEP 3: EDUCATION AND SKILLS -->
+
+                <section class="form-section" data-section="3" hidden>
+
+                    <div class="section-heading">
+                        <b>03</b>
+                        <div>
+                            <h2>Education &amp; Skills</h2>
+                            <p>Showcase your knowledge.</p>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+
+                        {% for field in form %}
+                            {% if field.name == "education" or field.name == "skills" %}
+
+                                <div class="field full-width">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}
+                                            <span>*</span>
+                                        {% endif %}
+                                    </label>
+
+                                    <div class="withvoice">
+                                        {{ field }}
+                                        <button type="button" class="voice-btn">
+                                            🎙 Voice
+                                        </button>
+                                    </div>
+
+                                    {% if field.help_text %}
+                                        <small class="help-text">
+                                            {{ field.help_text }}
+                                        </small>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </section>
+
+                <!-- STEP 4: EXPERIENCE AND PROJECTS -->
+
+                <section class="form-section" data-section="4" hidden>
+
+                    <div class="section-heading">
+                        <b>04</b>
+                        <div>
+                            <h2>Experience &amp; Projects</h2>
+                            <p>Highlight what you have accomplished.</p>
+                        </div>
+                    </div>
+
+                    <div class="field-grid">
+
+                        {% for field in form %}
+                            {% if field.name == "experience" or field.name == "projects" or field.name == "certifications" or field.name == "professional_summary" %}
+
+                                <div class="field full-width">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}
+                                            <span>*</span>
+                                        {% endif %}
+                                    </label>
+
+                                    <div class="withvoice">
+                                        {{ field }}
+                                        <button type="button" class="voice-btn">
+                                            🎙 Voice
+                                        </button>
+                                    </div>
+
+                                    {% if field.help_text %}
+                                        <small class="help-text">
+                                            {{ field.help_text }}
+                                        </small>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <small class="error-text">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </section>
+
+                <!-- FORM BUTTONS -->
+
+                <div class="form-footer">
+
+                    <button
+                        type="button"
+                        id="previousButton"
+                        class="btn secondary"
+                        hidden>
+                        ← Previous
+                    </button>
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            name="action"
+                            value="draft"
+                            id="saveDraftButton"
+                            class="btn secondary">
+                            Save Draft
+                        </button>
+
+                        <button
+                            type="button"
+                            id="nextButton"
+                            class="btn primary">
+                            Next Step →
+                        </button>
+
+                        <button
+                            type="submit"
+                            name="action"
+                            value="generate"
+                            id="generateButton"
+                            class="btn primary"
+                            hidden>
+                            ✦ Generate My AI Resume →
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <p class="privacy">
+                    Your information will be used to create your resume.
+                    Review AI-generated content before using it.
+                </p>
+
+            </form>
+
+        </section>
+
+        <!-- RIGHT SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="assistant">
+
+                <div class="assistant-icon">✦</div>
+
+                <h2>✦ Your AI Resume Assistant</h2>
+
+                <p>
+                    I'll help you create a professional,
+                    clear and job-focused resume.
+                </p>
+
+            </div>
+
+            <div class="tip">
+                <h3>💡 Pro Tip</h3>
+                <p>
+                    Include real project details, technologies used
+                    and your actual contribution. Add measurable
+                    results when possible.
+                </p>
+            </div>
+
+            <div class="check">
+
+                <h3>▤ Your Resume Checklist</h3>
+
+                <ul>
+                    <li>✓ Personal information</li>
+                    <li>✓ Career target</li>
+                    <li>✓ Education details</li>
+                    <li>✓ Skills and projects</li>
+                    <li>✓ Final AI generation</li>
+                </ul>
+
+            </div>
+
+            <div class="sidebrand">
+                <b>✦ ResumeGen.AI</b>
+                <p>Designed for your next big opportunity.</p>
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+</body>
+</html>

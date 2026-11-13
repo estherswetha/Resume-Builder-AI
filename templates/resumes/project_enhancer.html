@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Project Description Enhancer | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.tool-page {
+    max-width: 1000px;
+    margin: 45px auto;
+    padding: 0 22px 60px;
+    color: #59436b;
+}
+
+.tool-panel {
+    background: white;
+    border: 1px solid #ead8f0;
+    border-radius: 22px;
+    padding: 28px;
+    margin: 18px 0;
+}
+
+.tool-page label {
+    display: block;
+    font-weight: 700;
+    margin: 14px 0 7px;
+}
+
+.tool-page input,
+.tool-page select,
+.tool-page textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #decce8;
+    border-radius: 11px;
+    font: inherit;
+}
+
+.tool-page textarea {
+    min-height: 160px;
+}
+
+.tool-btn {
+    display: inline-block;
+    margin-top: 16px;
+    border: 0;
+    border-radius: 28px;
+    padding: 13px 22px;
+    background: linear-gradient(110deg,#df8bc6,#9861d0);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.secondary {
+    background: #73518e;
+}
+
+.muted {
+    color: #887b96;
+}
+</style>
+
+<section class="tool-page">
+
+    <h1>Improve Project Descriptions</h1>
+
+    <p class="muted">
+        Enter a project description.
+        AI will rewrite it into professional resume bullets.
+    </p>
+
+    <div class="tool-panel">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="action"
+                value="improve"
+            >
+
+            <label for="resume_id">
+                Save to a Resume (Optional)
+            </label>
+
+            <select id="resume_id" name="resume_id">
+
+                <option value="">
+                    Do not save yet
+                </option>
+
+                {% for resume in resumes %}
+
+                    <option
+                        value="{{ resume.pk }}"
+                        {% if selected_resume_id == resume.pk|stringformat:'s' %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ resume.title }} — {{ resume.full_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label for="target_role">
+                Target Role
+            </label>
+
+            <input
+                id="target_role"
+                name="target_role"
+                value="{{ target_role|default:'' }}"
+                placeholder="Python Developer"
+            >
+
+            <label for="project_description">
+                Original Project Description
+            </label>
+
+            <textarea
+                id="project_description"
+                name="project_description"
+                required
+            >{{ project_description|default:'' }}</textarea>
+
+            <button class="tool-btn" type="submit">
+                Improve with AI ↗
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if improved_text %}
+
+        <div class="tool-panel">
+
+            <h2>Improved Resume Content</h2>
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="save"
+                >
+
+                <input
+                    type="hidden"
+                    name="resume_id"
+                    value="{{ selected_resume_id }}"
+                >
+
+                <label for="improvedText">
+                    AI Improved Description
+                </label>
+
+                <textarea
+                    id="improvedText"
+                    name="improved_text"
+                    required
+                >{{ improved_text }}</textarea>
+
+                {% if selected_resume_id %}
+
+                    <button class="tool-btn" type="submit">
+                        Save to Selected Resume ↗
+                    </button>
+
+                {% endif %}
+
+            </form>
+
+            <button
+                class="tool-btn secondary"
+                type="button"
+                onclick="copyImprovedText()"
+            >
+                Copy Improved Text
+            </button>
+
+        </div>
+
+        <script>
+        function copyImprovedText() {
+            const text = document.getElementById("improvedText").value;
+            navigator.clipboard.writeText(text);
+            alert("Improved text copied!");
+        }
+        </script>
+
+    {% endif %}
+
+    <p>
+        <a href="{% url 'resumes:resume_architect' %}">
+            ← Back to AI Resume Architect
+        </a>
+    </p>
+
+</section>
+
+{% endblock %}

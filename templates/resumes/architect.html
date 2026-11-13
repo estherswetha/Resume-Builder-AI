@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}AI Resume Architect | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.architect-page {
+    min-height: 85vh;
+    padding: 28px 5% 60px;
+    background: linear-gradient(120deg, #fff7fc, #f2eaff);
+    color: #513b62;
+}
+
+.architect-wrap {
+    max-width: 1390px;
+    margin: auto;
+}
+
+.architect-hero {
+    text-align: center;
+    padding: 12px 0 45px;
+}
+
+.architect-hero small {
+    font-weight: 900;
+    letter-spacing: .1em;
+    color: #c16db8;
+}
+
+.architect-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(32px, 4vw, 48px);
+    margin: 18px 0;
+    color: #553867;
+}
+
+.architect-hero p {
+    font-size: 18px;
+    color: #887d9a;
+}
+
+.architect-section-title {
+    font-size: 27px;
+    margin: 28px 0;
+    color: #553867;
+}
+
+.architect-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.architect-action {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 96px;
+    padding: 20px 26px;
+    border: 1px solid #ead5f0;
+    border-radius: 22px;
+    background: white;
+    color: #634b78;
+    text-decoration: none;
+    font-size: 18px;
+    transition: .2s ease;
+}
+
+.architect-action:hover {
+    transform: translateY(-3px);
+    border-color: #d39ae5;
+    color: #8d49bd;
+    box-shadow: 0 13px 25px rgba(120,67,145,.11);
+}
+
+.architect-action span {
+    font-size: 22px;
+    color: #b35dc9;
+}
+
+.architect-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.architect-cta a {
+    display: inline-block;
+    background: linear-gradient(110deg, #e28fc7, #925bd3);
+    padding: 18px 34px;
+    border-radius: 40px;
+    color: white;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.architect-recent {
+    margin-top: 52px;
+}
+
+.architect-recent a {
+    color: #9450bd;
+    text-decoration: none;
+}
+
+.architect-empty {
+    color: #84758f;
+}
+
+@media(max-width:700px) {
+    .architect-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .architect-action {
+        min-height: 80px;
+        font-size: 16px;
+    }
+}
+</style>
+
+<section class="architect-page">
+
+    <div class="architect-wrap">
+
+        <header class="architect-hero">
+
+            <small>
+                {{ feature.number|default:"01 / CREATE" }}
+            </small>
+
+            <h1>AI Resume Architect</h1>
+
+            <p>
+                Build impressive, professional and
+                ATS-friendly resumes using AI.
+            </p>
+
+        </header>
+
+        <h2 class="architect-section-title">
+            Explore Your Workspace
+        </h2>
+
+        <div class="architect-grid">
+
+            <a class="architect-action"
+               href="{% url 'resumes:builder_create' %}">
+                <span>✦</span>
+                Create a resume from scratch
+            </a>
+
+            <a class="architect-action"
+               href="{% url 'resumes:architect_upload' %}">
+                <span>✦</span>
+                Upload PDF or DOCX resume
+            </a>
+
+            <a class="architect-action"
+               href="{% url 'resumes:architect_summary_hub' %}">
+                <span>✦</span>
+                Generate professional summaries
+            </a>
+
+            <a class="architect-action"
+               href="{% url 'resumes:architect_project_enhancer' %}">
+                <span>✦</span>
+                Improve project descriptions
+            </a>
+
+            <a class="architect-action"
+               href="{% url 'resumes:architect_templates' %}">
+                <span>✦</span>
+                Choose professional templates
+            </a>
+
+            <a class="architect-action"
+               href="{% url 'resumes:architect_library' %}">
+                <span>✦</span>
+                Preview and download resumes
+            </a>
+
+        </div>
+
+        <div class="architect-cta">
+
+            <a href="{% url 'resumes:builder_create' %}">
+                Start Building My Resume ↗
+            </a>
+
+        </div>
+
+        <div class="architect-recent">
+
+            <h3>Your recent resumes</h3>
+
+            {% if user.is_authenticated %}
+
+                {% if resumes %}
+
+                    <ul>
+                        {% for resume in resumes %}
+
+                            <li>
+                                <a href="{% url 'resumes:builder_preview' resume.pk %}">
+                                    {{ resume.title }}
+                                    —
+                                    {{ resume.target_role|default:"Resume draft" }}
+                                </a>
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+
+                {% else %}
+
+                    <p class="architect-empty">
+                        Your saved resumes will appear here
+                        after you create your first resume.
+                    </p>
+
+                {% endif %}
+
+            {% else %}
+
+                <p class="architect-empty">
+                    Log in to create and manage your resumes.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

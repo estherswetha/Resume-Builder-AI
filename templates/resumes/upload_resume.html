@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Resume | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.tool-page {
+    max-width: 950px;
+    margin: 45px auto;
+    padding: 0 22px 60px;
+    color: #59436b;
+}
+
+.tool-panel {
+    background: white;
+    border: 1px solid #ead8f0;
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 12px 30px rgba(99,57,120,.07);
+}
+
+.tool-page h1 {
+    font-family: Georgia, serif;
+    color: #58396b;
+}
+
+.tool-page label {
+    display: block;
+    font-weight: 700;
+    margin: 15px 0 7px;
+}
+
+.tool-page input,
+.tool-page textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #decce8;
+    border-radius: 11px;
+    font: inherit;
+}
+
+.tool-btn {
+    display: inline-block;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 30px;
+    padding: 13px 22px;
+    background: linear-gradient(110deg,#df8bc6,#9861d0);
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.hint {
+    color: #887b96;
+    font-size: 14px;
+}
+
+.extracted {
+    height: 260px;
+    background: #faf7fc;
+}
+</style>
+
+<section class="tool-page">
+
+    <h1>Upload an Existing Resume</h1>
+
+    <p class="hint">
+        Supported formats: PDF and DOCX.
+        Maximum file size: 8 MB.
+    </p>
+
+    <div class="tool-panel">
+
+        {% if not review %}
+
+            <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <label for="resume_file">
+                    Choose your resume
+                </label>
+
+                <input
+                    id="resume_file"
+                    type="file"
+                    name="resume_file"
+                    accept=".pdf,.docx"
+                    required
+                >
+
+                <button class="tool-btn" type="submit">
+                    Extract Resume Text ↗
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <h2>Review the Extracted Information</h2>
+
+            <p class="hint">
+                File: {{ filename }}.
+                Check your name and email before saving.
+                The extracted text will be placed in the
+                Experience field of your draft.
+            </p>
+
+            <form method="post">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="save"
+                >
+
+                <label for="full_name">Full Name</label>
+
+                <input
+                    id="full_name"
+                    name="full_name"
+                    value="{{ full_name }}"
+                    maxlength="150"
+                    required
+                >
+
+                <label for="email">Email Address</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value="{{ email }}"
+                    required
+                >
+
+                <label for="phone">Phone</label>
+
+                <input
+                    id="phone"
+                    name="phone"
+                    value="{{ phone|default:'' }}"
+                    maxlength="30"
+                >
+
+                <label for="target_role">Target Job Role</label>
+
+                <input
+                    id="target_role"
+                    name="target_role"
+                    value="{{ target_role|default:'' }}"
+                    maxlength="150"
+                >
+
+                <label>Extracted Text Preview</label>
+
+                <textarea class="extracted" readonly>{{ extracted_text }}</textarea>
+
+                <button class="tool-btn" type="submit">
+                    Save as Resume Draft ↗
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    </div>
+
+    <p>
+        <a href="{% url 'resumes:resume_architect' %}">
+            ← Back to AI Resume Architect
+        </a>
+    </p>
+
+</section>
+
+{% endblock %}

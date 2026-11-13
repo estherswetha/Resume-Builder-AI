@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}My Resume Library | ResumeGen.AI{% endblock %}
+
+{% block content %}
+
+<style>
+.tool-page {
+    max-width: 1100px;
+    margin: 42px auto;
+    padding: 0 22px 60px;
+    color: #59436b;
+}
+
+.library-card {
+    background: white;
+    border: 1px solid #ead8f0;
+    border-radius: 18px;
+    padding: 22px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    box-shadow: 0 7px 18px rgba(100,60,120,.04);
+}
+
+.library-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.library-actions a {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 22px;
+    background: #995ac5;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.library-actions a.secondary {
+    background: #745e85;
+}
+
+.muted {
+    color: #887b96;
+}
+
+@media(max-width:720px) {
+    .library-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
+
+<section class="tool-page">
+
+    <h1>My Resume Library</h1>
+
+    <p class="muted">
+        Preview, edit, print and manage your saved resumes.
+    </p>
+
+    {% for resume in resumes %}
+
+        <article class="library-card">
+
+            <div>
+
+                <h3>{{ resume.title }}</h3>
+
+                <p>
+                    {{ resume.full_name }}
+                    ·
+                    {{ resume.target_role|default:"Target role not set" }}
+                </p>
+
+                <small class="muted">
+                    {{ resume.get_status_display }}
+                    ·
+                    Updated {{ resume.updated_at|date:"d M Y, h:i A" }}
+                </small>
+
+            </div>
+
+            <div class="library-actions">
+
+                <a href="{% url 'resumes:architect_preview' resume.pk %}">
+                    Preview
+                </a>
+
+                <a
+                    class="secondary"
+                    href="{% url 'resumes:builder_edit' resume.pk %}"
+                >
+                    Edit
+                </a>
+
+                <a href="{% url 'resumes:architect_download' resume.pk %}">
+                    Print / Save PDF
+                </a>
+
+            </div>
+
+        </article>
+
+    {% empty %}
+
+        <p class="muted">
+            No saved resumes yet. Create your first resume
+            to see it here.
+        </p>
+
+        <a href="{% url 'resumes:builder_create' %}">
+            Create a Resume ↗
+        </a>
+
+    {% endfor %}
+
+    <p>
+        <a href="{% url 'resumes:resume_architect' %}">
+            ← Back to AI Resume Architect
+        </a>
+    </p>
+
+</section>
+
+{% endblock %}
